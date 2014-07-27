@@ -8,9 +8,7 @@ var express = require('express'),
 	// Custom middleware
 	routes = require('./routes'),
 	// Misc libraries & variables
-	fs = require('fs'),
 	path = require('path'),
-	uploadPath = path.join(__dirname, 'uploads'),
 	// App to configure
 	app = express();
 
@@ -27,11 +25,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-// TODO: clean this up - bad impl
-if (!fs.existsSync(uploadPath)) {
-	fs.mkdirSync(uploadPath);
-}
-
 require('./errorHandler')(app);
 
 module.exports = app;
