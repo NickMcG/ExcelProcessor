@@ -6,6 +6,17 @@ block content
 	br
 	br
 	form(action="/uploadFile", method="POST", enctype="multipart/form-data")
+		label(for="dataFile") Excel File:
 		input(type="file", name="dataFile")
+		//- TODO: Eventually remove this when I add bootstrap
+		br
+		label(for="sheetName") Sheet Name:
+		input(type="text", name="sheetName")
+		if missingSheetName
+			//- TODO: Eventually remove this when I add bootstrap
+			br
+			h2 Sheet name needs to be specified
+		//- TODO: Eventually remove this when I add bootstrap
+		br
 		input(type="submit", value="Upload")
 
