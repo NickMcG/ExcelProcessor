@@ -1,0 +1,16 @@
+extends layout
+block content
+	h1= title
+	p Configure how the processor will handle the columns.
+	br
+	br
+	form(action="/process", method="POST")
+		each col in headers
+			label(for="#{col}")= col
+			select(name="#{col}")
+				option(value="key") Key
+				option(value="sum") Sum
+				option(value="ignore") Ignore
+			//- TODO: Eventually remove this when I add bootstrap
+			br
+		input(type="submit", value="Process")
