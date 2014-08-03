@@ -106,7 +106,12 @@ router.post('/process', function (req, res) {
 			}
 		});
 		cleanInitials(cleanColumns, sheet.data);
-		collapsedSheet = rowCollapser(sheet.data, keyColumns, intColumns);
+		if (keyColumns.length > 0) {
+			collapsedSheet = rowCollapser(sheet.data, keyColumns, intColumns);
+		}
+		else {
+			collapsedSheet = sheet.data;
+		}
 		excelHelper.writeCsv(fstream, sheet.headers, collapsedSheet);
 		res.render('results', { 'token': req.body.token, 'sheetName': req.body.sheetName });
 	}
