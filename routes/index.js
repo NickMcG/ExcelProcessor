@@ -59,8 +59,17 @@ router.post('/upload', function (req, res) {
 		fstream = fs.createWriteStream(filepath);
 		file.pipe(fstream);
 		fstream.on('close', function () {
-			configureParams.headers = excelHelper.readSheet(filepath, configureParams.sheetName).headers;
-			res.render('configure', configureParams);
+			var sheetData = excelHelper.readSheet(filepath, configureParams.sheetName);
+			if (!sheetData.fileExists) {
+				renderError(res, 'File does not exist (bad error!)');
+			}
+			else if (!sheetData.sheetExists) {
+				renderError(res, 'Could not find the sheet specified: ' + configureParams.sheetName);
+			}
+			else {
+				configureParams.headers = sheetData.headers;
+				res.render('configure', configureParams);
+			}
 		});
 	});
 	req.busboy.on('field', function (key, value) {

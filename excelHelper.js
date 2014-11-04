@@ -1,4 +1,5 @@
 var _ = require('lodash'),
+	fs = require('fs'),
 	xlsx = require('xlsx'),
 	util = require('./utility');
 
@@ -22,13 +23,17 @@ function extractHeaders(sheet) {
 }
 
 module.exports.readSheet = function (filePath, sheetName) {
-	var file = xlsx.readFile(filePath),
-		sheet = file.Sheets[sheetName];
+	var fileExists = fs.existsSync(filePath),
+		file = fileExists ? xlsx.readFile(filePath) : { 'Sheets': {} },
+		sheet = file.Sheets[sheetName],
+		results = { 'fileExists': fileExists, 'sheetExists': !!sheet };
 
-	return {
-		'headers': extractHeaders(sheet),
-		'data': xlsx.utils.sheet_to_row_object_array(sheet)
-	};
+	if (sheet) {
+		results.headers = extractHeaders(sheet);
+		results.data = xlsx.utils.sheet_to_row_object_array(sheet);
+	}
+
+	return results;
 };
 
 module.exports.writeCsv = function (stream, headers, data) {

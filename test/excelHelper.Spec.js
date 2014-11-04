@@ -5,8 +5,24 @@ var expect = require('chai').expect,
 
 describe ('excel-helper', function () {
 	describe ('readSheet', function () {
+		it ('should return an object saying that the file does not exist', function () {
+			var results = helper.readSheet('./test-files/doesNotExist.xlsx', 'Sheet1');
+			expect(results).to.deep.equal({ 'fileExists': false, 'sheetExists': false });
+		});
+
+		it ('should return an object saying that the sheet does not exist', function () {
+			var expectedObj = {
+				'fileExists': true,
+				'sheetExists': false
+			};
+			var results = helper.readSheet('./test-files/SimpleFile.xlsx', 'Sheet42');
+			expect(results).to.deep.equal(expectedObj);
+		});
+
 		it ('should read the file and parse the headers', function () {
 			var expectedObj = {
+				'fileExists': true,
+				'sheetExists': true,
 				'headers': ['Col1', 'Col2', 'Col3'],
 				'data': [
 					{ 'Col1': 'R1C1', 'Col2': 'R1C2', 'Col3': 'R1C3', 'Col5': 'R1C5' },
@@ -16,6 +32,8 @@ describe ('excel-helper', function () {
 			var results = helper.readSheet('./test-files/SimpleFile.xlsx', 'Sheet1');
 
 			// For some reason, deep equal isn't working, so do the drawn-out matching
+			expect(results.fileExists).to.equal(expectedObj.fileExists);
+			expect(results.sheetExists).to.equal(expectedObj.sheetExists);
 			expect(results.headers).to.deep.equal(expectedObj.headers);
 
 			expect(results.data[0].Col1).to.equal(expectedObj.data[0].Col1);

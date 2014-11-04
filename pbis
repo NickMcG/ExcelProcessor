@@ -1,0 +1,11 @@
+* Handle splitting "first-name last-name"
+    - Have it go column1, column2, column3, etc.
+    - For example, if the original column was "Agent Name", the "Some Fellow's Name" would be:
+        - Agent Name1: Some
+        - Agent Name2: Fellow's
+        - Agent Name3: Name
+* Have it parse the sheet names and give you a drop-down of the sheet names instead of requiring you to type it
+* Ability to define templates
+    - Template would let you save sheet name and column configuration
+    - If the template does not apply (invalid sheet name, or column mismatches), then guide through the process
+    - Will need to save templates locally; maybe a new folder for templates and save as JSON?
