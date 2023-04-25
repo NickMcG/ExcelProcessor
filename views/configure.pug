@@ -6,15 +6,15 @@ block content
 	br
 	form(action="/process", method="POST")
 		each col in headers
-			label(for="#{col}")= col
-			select(name="#{col}")
+			label(for=col)= col
+			select(name=col)
 				option(value="ignore") Ignore
 				option(value="key") Key
 				option(value="sum") Sum
 				option(value="clean") Clean Initials
 			//- TODO: Eventually remove this when I add bootstrap
 			br
-		input(type="hidden", name="token", value="#{token}")
-		input(type="hidden", name="sheetName", value="#{sheetName}")
-		input(type="hidden", name="file", value="#{file}")
+		input(type="hidden", name="token", value=token)
+		input(type="hidden", name="sheetName", value=sheetName)
+		input(type="hidden", name="file", value=file)
 		input(type="submit", value="Process")

@@ -25,7 +25,7 @@ function renderError(res, msg) {
 }
 
 // TODO: Move this to initial-sanitizer?
-function cleanInitials (columns, sheet) {
+function cleanInitials(columns, sheet) {
 	_.each(columns, function (c) {
 		_.each(sheet, function (row) {
 			row[c] = initialsSanitizer(row[c]);
@@ -34,14 +34,14 @@ function cleanInitials (columns, sheet) {
 }
 
 /* GET home page. */
-router.get('/', function(req, res) {
+router.get('/', function (req, res) {
 	var missingSheetName = req.query.missingSheetName || 'false',
 		missingFile = req.query.missingFile || 'false';
 
 	res.render('index', {
-	  'title': 'Excel Processor',
-	  'missingSheetName': missingSheetName.toLowerCase() === 'true',
-	  'missingFile': missingFile.toLowerCase() === 'true'
+		'title': 'Excel Processor',
+		'missingSheetName': missingSheetName.toLowerCase() === 'true',
+		'missingFile': missingFile.toLowerCase() === 'true'
 	});
 });
 
@@ -49,11 +49,11 @@ router.get('/', function(req, res) {
 router.post('/upload', function (req, res) {
 	var gotFile = false,
 		configureParams = { 'title': 'Configure Columns', 'token': new Date().getTime().toString() };
-	req.busboy.on('file', function (fieldname, file, filename) {
+	req.busboy.on('file', function (fieldname, file, info) {
 		var fstream,
-			filepath = generateFilePath(configureParams.token, filename);
+			filepath = generateFilePath(configureParams.token, info.filename);
 		gotFile = true;
-		configureParams.file = filename;
+		configureParams.file = info.filename;
 
 		fs.mkdirSync(generateFileDir(configureParams.token));
 		fstream = fs.createWriteStream(filepath);
@@ -68,6 +68,9 @@ router.post('/upload', function (req, res) {
 			}
 			else {
 				configureParams.headers = sheetData.headers;
+				console.log("--------");
+				console.log("configureParams", configureParams);
+				console.log("--------");
 				res.render('configure', configureParams);
 			}
 		});
@@ -97,6 +100,11 @@ router.post('/process', function (req, res) {
 		renderError(res, 'No sheetName provided');
 	}
 	else {
+		console.log("------------");
+		console.log("req.body.token", req.body.token);
+		console.log("req.body.file", req.body.file);
+		console.log("req.body.sheetName", req.body.sheetName);
+		console.log("------------");
 		var collapsedSheet,
 			cleanColumns = [],
 			keyColumns = [],
