@@ -15,7 +15,7 @@
     "morgan": "^1.10.0",
     "pug": "^3.0.2",
     "static-favicon": "^2.0.0-alpha",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.7.7"
   },
   "devDependencies": {
     "chai": "^4.3.7",
